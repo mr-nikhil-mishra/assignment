@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useCallback, useState } from "react";
 import ReactFlow, {
   Background,
@@ -8,21 +7,28 @@ import ReactFlow, {
   Handle,
   applyEdgeChanges,
   applyNodeChanges,
+  useReactFlow,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import "./App.css";
 import CustomEdge from "./CustomEdge";
-
 import { useSelector, useDispatch } from "react-redux";
-import { addNode, removeNode } from "./graphSlice";
+import { addNode } from "./graphSlice";
 
 const CustomNode = ({ data, id }) => {
   const [showCloseIcon, setShowCloseIcon] = useState(false);
-  const dispatch = useDispatch();
+
+  const reactFlow = useReactFlow();
   const handleRemove = (nodeId) => {
-    alert("Node Removal Request! for " + nodeId);
-    dispatch(removeNode(nodeId));
+    reactFlow.deleteElements({
+      nodes: [
+        {
+          id: nodeId,
+        },
+      ],
+    });
   };
+
   return (
     <div
       className="custom-node"
@@ -118,7 +124,6 @@ export default function App() {
           onConnect={onConnect}
           snapToGrid={true}
           edgeTypes={edgeTypes}
-          deleteKeyCode={null}
         >
           <Background />
           <Controls showInteractive={false}>
