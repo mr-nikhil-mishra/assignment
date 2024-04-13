@@ -1,11 +1,7 @@
-import { getBezierPath } from "reactflow";
+import { getBezierPath, useReactFlow } from "reactflow";
 import "./CustomEdge.css";
 import { useState } from "react";
 
-const onEdgeClick = (evt, id) => {
-  evt.stopPropagation();
-  alert("edge removal request!");
-};
 const foreignObjectSize = 40;
 export default function CustomEdge({
   id,
@@ -27,7 +23,10 @@ export default function CustomEdge({
     targetPosition,
   });
   const [showButton, setShowButton] = useState(false);
-
+  const { setEdges } = useReactFlow();
+  const onEdgeClick = () => {
+    setEdges((edges) => edges.filter((edge) => edge.id !== id));
+  };
   return (
     <>
       <path
